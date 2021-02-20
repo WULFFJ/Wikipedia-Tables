@@ -1,0 +1,28 @@
+import pandas as pd
+import xlsxwriter
+
+url = input("Page to scrape?:")
+
+df = pd.read_html(url)
+
+count = len(df)
+print("Total # of tables =", count)
+print("What tables would you like?:")
+print("Enter #s separated by commas")
+wanted = str(input())
+lst = wanted.split(",")
+li = []
+for i in lst:
+    li.append(int(i))
+print("Fetching for Excel:")
+path = 'C:/python/pythonlinks/export_links.xlsx'
+writer = pd.ExcelWriter(path, engine='xlsxwriter')
+num = 0
+
+for i in li:
+    treq = pd.DataFrame(df[i])
+    tno = str(lst[num])
+    treq.to_excel(writer, sheet_name ='Table'+tno)
+    num= num +1
+writer.save()
+exit()
